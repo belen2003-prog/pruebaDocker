@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/personas")
+@CrossOrigin(origins = "*")       //accedo a datos desde cualquier origen
+@RequestMapping(path="/personas")        //punto de entrada de mi api
 public class PersonaController {
- //  @Autowired
-//PersonaServices servicio;
+   @Autowired
+PersonaServices servicio;
 
     @GetMapping("")
     public ResponseEntity<?> getAll(){
@@ -24,6 +25,7 @@ public class PersonaController {
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error, por favor intente más tarde\"}");
+            //mensaje en formato json
         }
     }
 
@@ -57,7 +59,7 @@ public class PersonaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Persona entity){
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Persona entity){   //patvariable busco el elemento y el requestbody lo actualiza
         System.out.println("EL ID LO TOMO DE LA URL");
         System.out.println("Nombre :" + entity.getId());
         System.out.println("Estos datos los tomo del cuerpo del Formulario");
@@ -71,7 +73,7 @@ public class PersonaController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")     //request que uso y accedo con id
     public ResponseEntity<?> delete(@PathVariable Long id){
         try{
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Eliminé el registro" + id);
